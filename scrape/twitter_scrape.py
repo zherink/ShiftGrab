@@ -49,13 +49,13 @@ print(keys)
 
 f = open('used_keys.txt', 'a')
 message = []
-# driver.get('https://shift.gearboxsoftware.com/rewards')
-for key in keys:
-    print('sending key ' + key)
-    message.append(twilio_client.messages.create(
+print('sending keys....')
+message.append(twilio_client.messages.create(
         to=os.getenv('TWILIO_TO'),
         from_=os.getenv('TWILIO_FROM'),
-        body="NEW SHiFT Code key: " + key))
+        body="NEW SHiFT Code key: " + ', '.join(keys)))
+# driver.get('https://shift.gearboxsoftware.com/rewards')
+for key in keys:
     f.write(key + '\n')
 
 driver.quit()
