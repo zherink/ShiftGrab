@@ -1,5 +1,9 @@
 #My stuff here
 used_keys.txt
+package/
+.DS_Store
+profile/
+.vscode
 
 
 # Byte-compiled / optimized / DLL files
