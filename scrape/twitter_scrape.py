@@ -1,5 +1,3 @@
-#logger?
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -9,10 +7,20 @@ from selenium.webdriver.chrome.options import Options
 
 import re
 import os
-from twilio.rest import Client
+import smtplib, ssl # for email
 import time
+#logger?
 
-twilio_client = Client(os.getenv('TWILIO_SID'), os.getenv('TWILIO_AUTH'))
+#setup email
+port = 465
+email_password = os.getenv('ETEXT_PASS')
+email_sender = os.getenv('ETEXT_EMAIL')
+context = ssl.create_default_context()
+server = smtplib.SMTP_SSL('smtp.gmail.com', port, context=context)
+try:
+    server.login(email_sender, email_password)
+except:
+    print('could not sign in to email')
 
 chrome_options = Options()
 arg_user_data = 'user-data-dir=' + os.getcwd() + '/profile'
@@ -107,7 +115,7 @@ for key in keys:
         driver.find_element_by_id('shift_code_input').send_keys(key)
         driver.find_element_by_id('shift_code_check').click()
         driver.find_element_by_class_name('redeem_button').click()
-        twilio_client.messages.create(to=os.getenv('TWILIO_TO'), from_=os.getenv('TWILIO_FROM'), body='SHiFT Code Redeemed')
+        server.sendmail(email_sender, os.getenv('ETEXT_ZACH'), 'SHiFT Code Redeemed')
         print('redeemed for Zach: ' + key)
     except:
         print('could not process key: ' + key)
@@ -145,7 +153,8 @@ try:
             driver.find_element_by_id('shift_code_input').send_keys(key)
             driver.find_element_by_id('shift_code_check').click()
             driver.find_element_by_class_name('redeem_button').click()
-            twilio_client.messages.create(to=os.getenv('TWILIO_GRAYSON'), from_=os.getenv('TWILIO_FROM'), body='SHiFT Code Redeemed')
+            # twilio_client.messages.create(to=os.getenv('TWILIO_GRAYSON'), from_=os.getenv('TWILIO_FROM'), body='SHiFT Code Redeemed')
+            server.sendmail(email_sender, os.getenv('ETEXT_GRAYSON'), 'SHiFT Code Redeemed')
             print('redeemed for Grayson: ' + key)
         except:
             print('could not process key: ' + key)
@@ -187,6 +196,7 @@ try:
             driver.find_element_by_id('shift_code_check').click()
             driver.find_element_by_class_name('redeem_button').click()
             # twilio_client.messages.create(to=os.getenv('TWILIO_GRAYSON'), from_=os.getenv('TWILIO_FROM'), body='SHiFT Code Redeemed')
+            server.sendmail(email_sender, os.getenv('ETEXT_JOSH'), 'SHiFT Code Redeemed')
             print('redeemed for Josh: ' + key)
         except:
             print('could not process key: ' + key)
