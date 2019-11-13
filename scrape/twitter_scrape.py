@@ -115,7 +115,10 @@ for key in keys:
         driver.find_element_by_id('shift_code_input').send_keys(key)
         driver.find_element_by_id('shift_code_check').click()
         driver.find_element_by_class_name('redeem_button').click()
-        server.sendmail(email_sender, os.getenv('ETEXT_ZACH'), 'SHiFT Code Redeemed')
+        try:
+            server.sendmail(email_sender, os.getenv('ETEXT_ZACH'), 'SHiFT Code Redeemed')
+        except:
+            print('could not send message to Zach')
         print('redeemed for Zach: ' + key)
     except:
         print('could not process key: ' + key)
@@ -154,7 +157,10 @@ try:
             driver.find_element_by_id('shift_code_check').click()
             driver.find_element_by_class_name('redeem_button').click()
             # twilio_client.messages.create(to=os.getenv('TWILIO_GRAYSON'), from_=os.getenv('TWILIO_FROM'), body='SHiFT Code Redeemed')
-            server.sendmail(email_sender, os.getenv('ETEXT_GRAYSON'), 'SHiFT Code Redeemed')
+            try:
+                server.sendmail(email_sender, os.getenv('ETEXT_GRAYSON'), 'SHiFT Code Redeemed')
+            except:
+                print('could not send message to Grayson')
             print('redeemed for Grayson: ' + key)
         except:
             print('could not process key: ' + key)
@@ -196,7 +202,10 @@ try:
             driver.find_element_by_id('shift_code_check').click()
             driver.find_element_by_class_name('redeem_button').click()
             # twilio_client.messages.create(to=os.getenv('TWILIO_GRAYSON'), from_=os.getenv('TWILIO_FROM'), body='SHiFT Code Redeemed')
-            server.sendmail(email_sender, os.getenv('ETEXT_JOSH'), 'SHiFT Code Redeemed')
+            try:
+                server.sendmail(email_sender, os.getenv('ETEXT_JOSH'), 'SHiFT Code Redeemed')
+            except:
+                print('could not send message to Josh')
             print('redeemed for Josh: ' + key)
         except:
             print('could not process key: ' + key)
